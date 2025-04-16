@@ -64,3 +64,49 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+<!-- 
+# تأكد من أنك في الفرع الرئيسي (main) وأن المستودع مرتبط بالريموت
+git checkout main
+
+# تحديث الفرع الرئيسي من الريموت (اختياري لكن يُنصح به)
+git pull origin main
+
+# إنشاء فرع جديد للمهمة الأولى والعمل عليه
+git checkout -b task1
+# قم بإجراء التعديلات، ثم أضف والتزم التغييرات
+git add .
+git commit -m "إضافة المهمة 1"
+
+# رفع الفرع إلى GitHub
+git push -u origin task1
+
+# العودة للفرع الرئيسي
+git checkout main
+
+# إنشاء فرع للمهمة الثانية
+git checkout -b task2
+# قم بالتعديلات، ثم أضف والتزم التغييرات
+git add .
+git commit -m "إضافة المهمة 2"
+
+# رفع الفرع إلى GitHub
+git push -u origin task2
+
+# كرر الخطوات أعلاه لكل مهمة جديدة
+# عند الانتهاء من جميع المهام، يمكنك دمج الفروع في main
+
+# العودة إلى الفرع الرئيسي
+git checkout main
+
+# دمج كل فرع في main بعد الانتهاء من كل مهمة
+git merge task1
+git merge task2
+# استمر في دمج باقي الفروع حسب الحاجة
+
+# بعد الدمج، ادفع التحديثات إلى GitHub
+git push origin main
+
+# (اختياري) حذف الفروع بعد الدمج
+git branch -d task1
+git branch -d task2 -->
