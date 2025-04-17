@@ -1,9 +1,6 @@
 <template>
-<div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Request New Password</h2>
-
-    <form class="space-y-4">
+<GuestLayout title="Request New password">
+    <form class="space-y-4"  @submit.prevent="" method="post">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
         <input
@@ -21,12 +18,9 @@
         Submit
       </button>
     </form>
-
-    <div class="mt-6 text-center text-sm text-gray-600">
-      Don't have an account?
-      <a href="#" class="text-indigo-600 hover:text-indigo-500 font-medium">Sign up</a>
-    </div>
-  </div>
-</div>
+</GuestLayout>
 </template>
-<script></script>
+<script setup>
+import GuestLayout from '../components/GuestLayout.vue';
+
+</script>
