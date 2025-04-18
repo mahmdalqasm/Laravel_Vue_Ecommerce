@@ -1,6 +1,6 @@
 <template>
     <header class="h-14 shadow bg-white flex justify-between items-center">
-        <button class="ml-4">
+        <button @click="emit('toggle-sidebar')" class="p-4 hover:bg-black/10 transition-colors">
             <Bars3Icon class="w-6" />
         </button class="p-4 text-gray-700">
         <div class="px-4">
@@ -9,7 +9,7 @@
                     <MenuButton class="flex items-center">
                         <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="" class="rounded-full w-8 mr-2">
                         <small>John Smith</small>
-                        <ChevronDownIcon class="h-5 w-5 text-violet-200 hover:text-violet-600" aria-hidden="true" />
+                        <ChevronDownIcon class="h-5 w-5 text-violet-200 hover:text-indigo-600" aria-hidden="true" />
                     </MenuButton>
                 </div>
 
@@ -22,19 +22,19 @@
                         <div class="px-1 py-1">
                             <MenuItem v-slot="{ active }">
                             <button :class="[
-                                active ? 'bg-violet-500 text-white' : 'text-gray-900',
+                                active ? 'bg-indigo-700 text-white' : 'text-gray-900',
                                 'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]">
-                                <UserIcon :active="active" class="mr-2 h-5 w-5 text-violet-400" aria-hidden="true" />
+                                <UserIcon :active="active" class="mr-2 h-5 w-5 text-indigo-600" aria-hidden="true" />
                                 Profile
                             </button>
                             </MenuItem>
                             <MenuItem v-slot="{ active }">
                             <button :class="[
-                                active ? 'bg-violet-500 text-white' : 'text-gray-900',
+                                active ? 'bg-indigo-700 text-white' : 'text-gray-900',
                                 'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]">
-                                <ArrowLeftStartOnRectangleIcon :active="active" class="mr-2 h-5 w-5 text-violet-400"
+                                <ArrowLeftStartOnRectangleIcon :active="active" class="mr-2 h-5 w-5 text-indigo-600"
                                     aria-hidden="true" />
                                 Logout
                             </button>
@@ -49,10 +49,11 @@
 
 <script setup>
 import { Bars3Icon } from "@heroicons/vue/24/solid";
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
+import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline"
-import { UserIcon } from "@heroicons/vue/24/solid"
+import { UserIcon } from "@heroicons/vue/24/solid";
+const emit = defineEmits(["toggle-sidebar"]);
 const { title } = defineProps({
     title: "string",
 });

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[200px] bg-indigo-700 text-white py-4 px-2">
+    <div class="w-[200px] bg-indigo-700 text-white py-4 px-2 transition-all">
             <router-link class="font-semibold flex items-center content-center py-2 px-3 rounded transition-colors hover:bg-black/20" :to="{name: 'app-dashboard'}">
                 <span class="mr-3 text-gray-300">
                     <HomeIcon class="w-6" />
