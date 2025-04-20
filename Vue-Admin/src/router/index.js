@@ -8,6 +8,7 @@ import Products from "../views/Products.vue";
 import Users from "../views/Users.vue";
 import Report from "../views/Report.vue";
 import { useAuth } from "../stores/Auth.js";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
     {
@@ -63,6 +64,11 @@ const routes = [
         meta: {
             requiresGuest: true,
         },
+    },
+    {
+        path: "/:pathMatch(.*)",
+        name: "notFound",
+        component: NotFound,
     },
 ];
 
