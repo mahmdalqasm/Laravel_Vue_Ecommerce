@@ -77,6 +77,8 @@ const router = createRouter({
     routes,
 });
 
+
+// verify user access to pages 
 router.beforeEach((to, from, next) => {
     const auth = useAuth();
     if (to.meta.requiresAuth && !auth.user.token) {
