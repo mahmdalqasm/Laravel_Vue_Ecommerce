@@ -53,7 +53,13 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline"
 import { UserIcon } from "@heroicons/vue/24/solid";
+
+
+//add emit to provide parent -AppLayout- access on toggle which can (close/open) sidebar
 const emit = defineEmits(["toggle-sidebar"]);
+
+
+
 const { title } = defineProps({
     title: "string",
 });

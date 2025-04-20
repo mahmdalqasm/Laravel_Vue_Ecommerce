@@ -14,32 +14,45 @@
 </template>
 
 <script setup>
+import { ref,onMounted,onUnmounted } from "vue";
 import Sidebar from './Sidebar.vue';
 import Navbar from './Navbar.vue';
-import { ref,onMounted,onUnmounted } from "vue";
+
+
+// add new variable to control (open/close) sidebar
 const sidebarOpened = ref(true);
+
+// no comment
 const { title } = defineProps({
     title: "string",
 });
+
+
+// create toggle for sidebar
 function ToggleSidebar() {
     sidebarOpened.value = !sidebarOpened.value
 }
-onMounted(() => {
-     handleSidebarOpened()
-    window.addEventListener("resize",  handleSidebarOpened);
-})
 
-onUnmounted(() => {
-    window.removeEventListener("resize", handleSidebarOpened);
-})
-
+// change status of sidebar depended on window.outerwidth
 function handleSidebarOpened() {
     if (window.outerWidth <= 768) {
         sidebarOpened.value = false
     } else {
         sidebarOpened.value = true
     }
-
 }
+
+// run function when mounted hook and when user do resize for screen
+onMounted(() => {
+     handleSidebarOpened()
+    window.addEventListener("resize",  handleSidebarOpened);
+})
+
+
+// remove the event when on unmounted hook
+onUnmounted(() => {
+    window.removeEventListener("resize", handleSidebarOpened);
+})
+
 </script>
 <style></style>
