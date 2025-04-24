@@ -8,7 +8,7 @@
                 <div>
                     <MenuButton class="flex items-center">
                         <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="" class="rounded-full w-8 mr-2">
-                        <small>John Smith</small>
+                        <small>{{ currentUser }}</small>
                         <ChevronDownIcon class="h-5 w-5 text-violet-200 hover:text-indigo-600" aria-hidden="true" />
                     </MenuButton>
                 </div>
@@ -30,7 +30,7 @@
                             </button>
                             </MenuItem>
                             <MenuItem v-slot="{ active }">
-                            <button :class="[
+                            <button v-if="userStore.user.token" @click="onLogout" :class="[
                                 active ? 'bg-indigo-700 text-white' : 'text-gray-900',
                                 'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]">
@@ -53,14 +53,32 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline"
 import { UserIcon } from "@heroicons/vue/24/solid";
+import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user";
+import { computed, reactive } from "vue";
 
+const router = useRouter();
+const userStore = useUserStore();
+
+async function onLogout() {
+  try {
+    await userStore.logout()
+    router.push({ name: 'login' })
+  } catch (err) {
+    console.error('خطأ أثناء تسجيل الخروج', err)
+  }
+}
 
 //add emit to provide parent -AppLayout- access on toggle which can (close/open) sidebar
 const emit = defineEmits(["toggle-sidebar"]);
 
 
+const currentUser = computed(() => {
+    return userStore.user.data?.data?.name;
+})
 
 const { title } = defineProps({
     title: "string",
 });
+
 </script>

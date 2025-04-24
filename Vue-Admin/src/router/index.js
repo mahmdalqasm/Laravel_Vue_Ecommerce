@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from '../stores/user.js'
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
 import RequestPassword from "../views/RequestPassword.vue";
@@ -7,7 +8,6 @@ import AppLayout from "../components/AppLayout.vue";
 import Products from "../views/Products.vue";
 import Users from "../views/Users.vue";
 import Report from "../views/Report.vue";
-import { useAuth } from "../stores/Auth.js";
 import NotFound from "../views/NotFound.vue";
 
 const routes = [
@@ -78,17 +78,21 @@ const router = createRouter({
 });
 
 
-// verify user access to pages 
+// verify user access to pages
+
 router.beforeEach((to, from, next) => {
-    const auth = useAuth();
-    if (to.meta.requiresAuth && !auth.user.token) {
-        console.log("object");
-        next({ name: "login" });
-    } else if (to.meta.requiresGuest && auth.user.token) {
-        next({name: "app-dashboard"});
-    } else {
-        next();
-    }
+  const userStore = useUserStore();
+
+  if (to.meta.requiresAuth && !userStore.user.token) {
+    next({ name: "login" });
+  }
+  else if (to.meta.requiresGuest && userStore.user.token) {
+    next({ name: "app-dashboard" });
+  }
+  else {
+    next();
+  }
 });
+
 
 export default router;
