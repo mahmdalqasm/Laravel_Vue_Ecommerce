@@ -39,6 +39,8 @@ const userStore = useUserStore();
 // add new variable to control (open/close) sidebar
 const sidebarOpened = ref(true);
 
+
+// get them id of user from user.js store
 const currentUser = computed(() => {
     return userStore.user.data?.data?.id;
 });
@@ -65,7 +67,7 @@ function handleSidebarOpened() {
 // run function when mounted hook and when user do resize for screen
 onMounted(async () => {
     try {
-        await userStore.getCurrentUser();
+        await userStore.getCurrentUser();// return data of current user to show them in navbar
     } catch (error) {
         console.error("Error fetching current user:", error);
     }

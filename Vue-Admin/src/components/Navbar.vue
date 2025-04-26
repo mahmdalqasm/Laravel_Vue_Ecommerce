@@ -60,6 +60,8 @@ import { computed, reactive } from "vue";
 const router = useRouter();
 const userStore = useUserStore();
 
+
+
 async function onLogout() {
   try {
     await userStore.logout()
@@ -72,7 +74,7 @@ async function onLogout() {
 //add emit to provide parent -AppLayout- access on toggle which can (close/open) sidebar
 const emit = defineEmits(["toggle-sidebar"]);
 
-
+// get name of user from user.js store
 const currentUser = computed(() => {
     return userStore.user.data?.data?.name;
 })
