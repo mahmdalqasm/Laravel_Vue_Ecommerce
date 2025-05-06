@@ -25,7 +25,7 @@
                     placeholder="Type to Search products">
             </div>
         </div>
-        <Spinner v-if="products.loading" />
+        <Spinner v-if="loading" />
         <template v-else>
             <table class="table-auto w-full">
                 <thead>
@@ -73,6 +73,10 @@ const search = ref("");
 const productStore = useProductStore()
 const products = computed(() => {
     return productStore.products.data;
+})
+
+const loading = computed(() => {
+    return productStore.products.loading;
 })
 
 onMounted(() => {
