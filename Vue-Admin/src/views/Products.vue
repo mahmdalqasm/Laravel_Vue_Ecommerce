@@ -33,10 +33,8 @@
                         <th class="border-b-2 p-2 text-left">ID</th>
                         <th class="border-b-2 p-2 text-left"> Image </th>
                         <th class="border-b-2 p-2 text-left">Title</th>
-                        <th class="border-b-2 p-2 text-left"> Quantity</th>
                         <th class="border-b-2 p-2 text-left"> Price</th>
                         <th class="border-b-2 p-2 text-left"> Last Updated At</th>
-                        <th class="border-b-2 p-2 text-left"> Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,10 +47,7 @@
                             {{ product.title }}
                         </td>
                         <td class="border-b p-2">
-                            {{ product.price }}
-                        </td>
-                        <td class="border-b p-2">
-                            {{ product.quantity }}
+                            {{ product.pricing }}
                         </td>
                         <td class="border-b p-2 ">
                             {{ product.updated_at }}
