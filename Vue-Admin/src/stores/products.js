@@ -6,15 +6,32 @@ export const useProductStore = defineStore("products", {
         products: {
             loading: false,
             data: [],
+            links: [],
+            from: null,
+            to: null,
+            page: 1,
+            limit: null,
+            total: null
         },
     }),
 
     actions: {
-        async getProducts() {
+        async getProducts(url = null) {
             this.products.loading = true;
+            url = url || "/product";
             try {
-                const response = await axiosClient.get("/product");
-                this.products.data = response.data;
+                const response = await axiosClient.get(url);
+                this.products = {
+                    data: response.data,
+                    links: response.data.meta.links,
+                    from: response.data.meta.from,
+                    to: response.data.meta.to,
+                    page: response.data.meta.current_page,
+                    limit: response.data.meta.per_page,
+                    total: response.data.meta.total,
+                }
+                console.log(this.products);
+                console.log(url);
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
