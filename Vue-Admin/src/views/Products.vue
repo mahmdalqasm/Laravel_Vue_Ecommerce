@@ -1,5 +1,4 @@
 <template>
-
     <div class="flex items-center justify-between mb-3">
         <h1 class="text-3xl font-semibold">Products</h1>
         <button
@@ -9,6 +8,7 @@
             Add New Product
         </button>
     </div>
+
     <div class="bg-white p-4 rounded-lg shadow">
         <div class="flex justify-between border-b-2 pb-3">
             <div class="flex items-center">
@@ -34,7 +34,9 @@
                 />
             </div>
         </div>
-        <Spinner v-if="loading" />
+
+        <Spinner v-if="productData.loading" />
+
         <template v-else>
             <table class="table-auto w-full">
                 <thead>
@@ -43,13 +45,11 @@
                         <th class="border-b-2 p-2 text-left">Image</th>
                         <th class="border-b-2 p-2 text-left">Title</th>
                         <th class="border-b-2 p-2 text-left">Price</th>
-                        <th class="border-b-2 p-2 text-left">
-                            Last Updated At
-                        </th>
+                        <th class="border-b-2 p-2 text-left">Last Updated At</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="product of products.data">
+                    <tr v-for="product in productData.products" :key="product.id">
                         <td class="border-b p-2">{{ product.id }}</td>
                         <td class="border-b p-2">
                             <img
@@ -58,32 +58,25 @@
                                 :alt="product.title"
                             />
                         </td>
-                        <td
-                            class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"
-                        >
+                        <td class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
                             {{ product.title }}
                         </td>
-                        <td class="border-b p-2">
-                            {{ product.pricing }}
-                        </td>
-                        <td class="border-b p-2">
-                            {{ product.updated_at }}
-                        </td>
+                        <td class="border-b p-2">{{ product.pricing }}</td>
+                        <td class="border-b p-2">{{ product.updated_at }}</td>
                     </tr>
                 </tbody>
             </table>
+
             <div class="flex justify-between items-center mt-5">
-                <span class=""
-                    >Showing From {{ from }} to
-                    {{ to }}</span
-                >
+                <span>Showing From {{ productData.from }} to {{ productData.to }}</span>
+
                 <nav
-                    v-if="total > limit"
+                    v-if="productData.total > productData.limit"
                     class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
                     aria-label="Pagination"
                 >
                     <a
-                        v-for="(link, i) of links"
+                        v-for="(link, i) in productData.links"
                         :key="i"
                         :disabled="!link.url"
                         href="#"
@@ -95,46 +88,55 @@
                                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
                             i === 0 ? 'rounded-l-md' : '',
-                            i === products.links.length - 1
+                            i === productData.links.length - 1
                                 ? 'rounded-r-md'
                                 : '',
                             !link.url ? ' bg-gray-100 text-gray-700' : '',
                         ]"
                         v-html="link.label"
-                    >
-                    </a>
+                    ></a>
                 </nav>
             </div>
         </template>
     </div>
 </template>
+
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { useProductStore } from "../stores/products";
 import Spinner from "../components/core/Spinner.vue";
+import { PRODUCTS_PER_PAGE } from "../constants";
 
-const perPage = ref(10);
+const perPage = ref(PRODUCTS_PER_PAGE);
 const search = ref("");
+
 const productStore = useProductStore();
-const products = computed(() => productStore.products.data);
-const loading = computed(() => productStore.products.loading);
-const from = computed(() =>  productStore.products.from);
-const to = computed(() => productStore.products.to);
-const total = computed(() => productStore.products.total);
-const limit = computed(() => productStore.products.limit);
-const links = computed(() => productStore.products.links);
+
+const productData = computed(() => {
+    const p = productStore.products;
+    return {
+        products: p.data?.data || [],
+        loading: p.loading,
+        from: p.from,
+        to: p.to,
+        total: p.total,
+        limit: p.limit,
+        links: p.links,
+    };
+});
 
 
+function getForPage(ev, link) {
+    if (!link.url || link.active) return;
+    productStore.getProducts(link.url);
+}
+
+function getProducts(url = null) {
+    productStore.getProducts(url, { perPage: perPage.value, search: search.value})
+}
 onMounted(() => {
     productStore.getProducts();
 });
-
-function getForPage(ev, link) {
-if(!link.url || link.active){
-    return
-}
-    productStore.getProducts(link.url);
-    console.log(link);
-}
 </script>
+
 <style scoped></style>

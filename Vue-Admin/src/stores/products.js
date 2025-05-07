@@ -16,11 +16,15 @@ export const useProductStore = defineStore("products", {
     }),
 
     actions: {
-        async getProducts(url = null) {
+        async getProducts(url = null, options = {}) {
             this.products.loading = true;
             url = url || "/product";
+            const params = {
+                per_page: options.perPage || 10,
+                search: options.search || ''
+            };
             try {
-                const response = await axiosClient.get(url);
+                const response = await axiosClient.get(url, {params});
                 this.products = {
                     data: response.data,
                     links: response.data.meta.links,
@@ -30,8 +34,6 @@ export const useProductStore = defineStore("products", {
                     limit: response.data.meta.per_page,
                     total: response.data.meta.total,
                 }
-                console.log(this.products);
-                console.log(url);
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
