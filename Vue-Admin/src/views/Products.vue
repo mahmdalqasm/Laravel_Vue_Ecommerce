@@ -14,7 +14,7 @@
             <div class="flex items-center">
                 <span class="whitespace-nowrap mr-3">Per Page</span>
                 <select
-                    @change="getProducts(null)"
+                    @change="() => getProducts(null, { perPage, search })"
                     v-model="perPage"
                     class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 >
@@ -28,7 +28,7 @@
             <div>
                 <input
                     v-model="search"
-                    @change="getProducts(null)"
+                    @change="() => getProducts(null, { perPage, search })"
                     class="appearance-none relative block w-48 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Type to Search products"
                 />
@@ -45,11 +45,16 @@
                         <th class="border-b-2 p-2 text-left">Image</th>
                         <th class="border-b-2 p-2 text-left">Title</th>
                         <th class="border-b-2 p-2 text-left">Price</th>
-                        <th class="border-b-2 p-2 text-left">Last Updated At</th>
+                        <th class="border-b-2 p-2 text-left">
+                            Last Updated At
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="product in productData.products" :key="product.id">
+                    <tr
+                        v-for="product in productData.products"
+                        :key="product.id"
+                    >
                         <td class="border-b p-2">{{ product.id }}</td>
                         <td class="border-b p-2">
                             <img
@@ -58,7 +63,9 @@
                                 :alt="product.title"
                             />
                         </td>
-                        <td class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
+                        <td
+                            class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"
+                        >
                             {{ product.title }}
                         </td>
                         <td class="border-b p-2">{{ product.pricing }}</td>
@@ -68,7 +75,10 @@
             </table>
 
             <div class="flex justify-between items-center mt-5">
-                <span>Showing From {{ productData.from }} to {{ productData.to }}</span>
+                <span
+                    >Showing From {{ productData.from }} to
+                    {{ productData.to }}</span
+                >
 
                 <nav
                     v-if="productData.total > productData.limit"
@@ -80,7 +90,7 @@
                         :key="i"
                         :disabled="!link.url"
                         href="#"
-                        @click.prevent="getForPage($event, link)"
+                        @click.prevent="getForPage($event, link, perPage, search)"
                         aria-current="page"
                         class="relative inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap"
                         :class="[
@@ -125,17 +135,22 @@ const productData = computed(() => {
     };
 });
 
-
-function getForPage(ev, link) {
+function getForPage(ev, link, perPage, search) {
     if (!link.url || link.active) return;
-    productStore.getProducts(link.url);
+    productStore.getProducts(link.url,{
+        perPage: perPage.value,
+        search: search.value,
+    });
 }
 
 function getProducts(url = null) {
-    productStore.getProducts(url, { perPage: perPage.value, search: search.value})
+    productStore.getProducts(url, {
+        perPage: perPage.value,
+        search: search.value,
+    });
 }
 onMounted(() => {
-    productStore.getProducts();
+    getProducts();
 });
 </script>
 
