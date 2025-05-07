@@ -21,7 +21,9 @@ export const useProductStore = defineStore("products", {
             url = url || "/product";
             const params = {
                 per_page: options.perPage || 10,
-                search: options.search || ''
+                search: options.search || '',
+                sort_field: options.sort_field || "",
+                sort_direction: options.sort_direction || "",
             };
             try {
                 const response = await axiosClient.get(url, {params});
