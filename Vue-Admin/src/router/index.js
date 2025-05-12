@@ -5,7 +5,7 @@ import Dashboard from "../views/Dashboard.vue";
 import RequestPassword from "../views/RequestPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 import AppLayout from "../components/AppLayout.vue";
-import Products from "../views/Products.vue";
+import Products from "../views/Products/Products.vue";
 import Users from "../views/Users.vue";
 import Report from "../views/Report.vue";
 import NotFound from "../views/NotFound.vue";
