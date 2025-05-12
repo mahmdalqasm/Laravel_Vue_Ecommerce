@@ -16,17 +16,56 @@ export const useProductStore = defineStore("products", {
     }),
 
     actions: {
+        // async getProducts(url = null, options = {}) {
+        //     this.products.loading = true;
+        //     url = url || "/product";
+        //     const params = {
+        //         per_page: options.perPage || 10,
+        //         search: options.search || '',
+        //         sort_field: options.sort_field || "",
+        //         sort_direction: options.sort_direction || "",
+        //     };
+        //     try {
+        //         const response = await axiosClient.get(url, {params});
+        //         this.products = {
+        //             data: response.data,
+        //             links: response.data.meta.links,
+        //             from: response.data.meta.from,
+        //             to: response.data.meta.to,
+        //             page: response.data.meta.current_page,
+        //             limit: response.data.meta.per_page,
+        //             total: response.data.meta.total,
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching products:", error);
+        //     } finally {
+        //         this.products.loading = false;
+        //     }
+        // },
         async getProducts(url = null, options = {}) {
             this.products.loading = true;
-            url = url || "/product";
+
+            // 🟡 اجلب perPage من options أو من state
+            const perPage = options.perPage || this.products.limit || 10;
+
+            // 🟡 احذف أي query params من url وأعد إضافتها يدويًا لضمان وجود perPage
+            if (url && url.includes('?')) {
+                const baseUrl = url.split('?')[0];
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                url = baseUrl;
+                options.page = urlParams.get('page') || 1;
+            }
+
             const params = {
-                per_page: options.perPage || 10,
+                per_page: perPage,
+                page: options.page || this.products.page || 1,
                 search: options.search || '',
                 sort_field: options.sort_field || "",
                 sort_direction: options.sort_direction || "",
             };
+
             try {
-                const response = await axiosClient.get(url, {params});
+                const response = await axiosClient.get(url || "/product", { params });
                 this.products = {
                     data: response.data,
                     links: response.data.meta.links,
@@ -35,12 +74,13 @@ export const useProductStore = defineStore("products", {
                     page: response.data.meta.current_page,
                     limit: response.data.meta.per_page,
                     total: response.data.meta.total,
-                }
+                };
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
                 this.products.loading = false;
             }
-        },
+        }
+
     },
 });

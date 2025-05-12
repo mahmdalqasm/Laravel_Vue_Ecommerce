@@ -175,6 +175,7 @@ function getForPage(ev, link, perPage, search) {
         perPage: perPage.value,
         search: search.value,
     });
+    console.log(perPage)
 }
 
 function getProducts(url = null) {
