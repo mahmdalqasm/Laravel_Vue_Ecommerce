@@ -35,7 +35,7 @@ export const useProductStore = defineStore("products", {
             };
 
             try {
-                const response = await axiosClient.get(url || "/product", { params });
+                const response = await axiosClient.get(url || "/products", { params });
                 this.products = {
                     data: response.data,
                     links: response.data.meta.links,
@@ -50,6 +50,35 @@ export const useProductStore = defineStore("products", {
             } finally {
                 this.products.loading = false;
             }
+        },
+
+        async createProduct(product){
+            if(product.image instanceof File){
+                const form = new FormData()
+                form.append("title",product.title)
+                form.append("image",product.image)
+                form.append("description",product.description)
+                form.append("pricing",product.pricing)
+                product = form
+            }
+            return await axiosClient.post("/products",product)
+        },
+
+        async updateProduct(product){
+            const id = product.id
+            if(product.image instanceof File){
+                const form = new FormData()
+                form.append("title",product.title)
+                form.append("image",product.image)
+                form.append("description",product.description)
+                form.append("pricing",product.pricing)
+                form.append("id",product.id)
+                form.append("_method","PUT")
+                product = form;
+            }else{
+                product._method = "PUT"
+            }
+            return await axiosClient.post(`/products/${id}`, product)
         }
 
     },
