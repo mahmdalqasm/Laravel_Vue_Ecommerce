@@ -158,7 +158,6 @@ const product = ref({
     pricing: props.product.pricing,
 });
 
-
 const show = computed({
     get: () => props.modelValue,
     set: (value) => emit("update:modelValue", value),
@@ -177,8 +176,6 @@ onUpdated(() => {
         pricing: props.product.pricing,
     };
 });
-
-
 
 // function onSubmit() {
 //     loading.value = true
@@ -204,34 +201,36 @@ onUpdated(() => {
 // }
 
 async function onSubmit() {
-  loading.value = true;
-  try {
-    let response;
-    if (product.value.id) {
-      response = await store.updateProduct(product.value);
-      if (response.status === 200) {
-        await store.getProducts();
-        closeModal();
-      }
-    } else {
-      response = await store.createProduct(product.value);
-      if (response.status === 201) {
-        await store.getProducts();
-        closeModal();
-      }
+    loading.value = true;
+    try {
+        let response;
+        if (product.value.id) {
+            response = await store.updateProduct(product.value);
+            if (response.status === 200) {
+                await store.getProducts();
+                closeModal();
+            }
+        } else {
+            response = await store.createProduct(product.value);
+            if (response.status === 201) {
+                await store.getProducts();
+                closeModal();
+            }
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 422) {
+            console.log("Validation errors:", error.response.data.errors);
+            alert(
+                "Please check your input: " +
+                    JSON.stringify(error.response.data.errors)
+            );
+        } else {
+            alert("An unexpected error occurred.");
+        }
+    } finally {
+        loading.value = false;
     }
-  } catch (error) {
-    if (error.response && error.response.status === 422) {
-      console.log("Validation errors:", error.response.data.errors);
-      alert("Please check your input: " + JSON.stringify(error.response.data.errors));
-    } else {
-      alert("An unexpected error occurred.");
-    }
-  } finally {
-    loading.value = false;
-  }
 }
-
 </script>
 
 <style scoped></style>

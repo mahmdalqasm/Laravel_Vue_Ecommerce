@@ -52,17 +52,27 @@ export const useProductStore = defineStore("products", {
             }
         },
 
-        async createProduct(product){
-            if(product.image instanceof File){
-                const form = new FormData()
-                form.append("title",product.title)
-                form.append("image",product.image)
-                form.append("description",product.description)
-                form.append("pricing",product.pricing)
-                product = form
-            }
-            return await axiosClient.post("/products",product)
-        },
+        // async createProduct(product){
+        //     if(product.image instanceof File){
+        //         const form = new FormData()
+        //         form.append("title",product.title)
+        //         form.append("image",product.image)
+        //         form.append("description",product.description)
+        //         form.append("pricing",product.pricing)
+        //         product = form
+        //     }
+        //     return await axiosClient.post("/products",product)
+        // },
+
+       async createProduct(product) {
+    const form = new FormData();
+    form.append("title", product.title);
+    form.append("image", product.image); // ملف الصورة
+    form.append("description", product.description);
+    form.append("pricing", product.pricing);
+
+    return await axiosClient.post("/products", form);
+},
 
         async updateProduct(product){
             const id = product.id

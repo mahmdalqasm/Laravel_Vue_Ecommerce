@@ -81,7 +81,7 @@
                     <td class="border-b p-2">
                         <img
                             class="w-16 h-16 object-cover"
-                            :src="product.image"
+                            :src="product.image_url"
                             :alt="product.title"
                         />
                     </td>

@@ -22,4 +22,9 @@ class Product extends Model
         ->generateSlugsFrom("title")
         ->saveSlugsTo("slug");
     }
+
+    public function getImageUrlAttribute()
+{
+    return $this->image ? asset('storage/' . $this->image) : null;
+}
 }
